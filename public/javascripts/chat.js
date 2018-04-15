@@ -5,24 +5,23 @@ app.config(function ($mdThemingProvider) {
         .primaryPalette('blue')
         .accentPalette('red');
 });
-app.controller('chatController', function ($scope) {
-    $scope.messages = [
-        {
-            'sender': 'USER',
-            'text': 'Hello'
-        },
-        {
-            'sender': 'BOT',
-            'text': 'hi ssup!'
-        },
-        {
-            'sender': 'USER',
-            'text': 'the roof'
-              },
-        {
-            'sender': 'BOT',
-            'text': 'but i see sky'
-              }
+app.controller('chatController', function ($scope, $sce) {
+    $scope.messages = [];
+    $scope.trust = $sce.trustAsHtml;
+    var exampleSocket = new WebSocket('ws://localhost:9000/chatSocket');
+    exampleSocket.onmessage = function () {
+        var jsonData = JSON.parse(event.data);
+        jsonData.time = new Date()
+            .toLocaleTimeString();
+        $scope.messages.push(jsonData);
+        $scope.$apply();
+        console.log(jsonData);
 
-         ];
+
+        //console.log(event.data);
+    };
+    $scope.sendMessage = function (event) {
+        exampleSocket.send($scope.usermessage);
+        $scope.usermessage = "";
+    };
 });

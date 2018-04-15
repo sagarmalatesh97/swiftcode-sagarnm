@@ -41,7 +41,7 @@ public class MessageActor extends UntypedActor {
             messageObject.text =message.toString();
             messageObject.sender=USER;
             out.tell(objectMapper.writeValueAsString(messageObject), self());
-           newsAgentResponse = newsAgentService.getNewsAgentResponse("find"+message, UUID.randomUUID());
+           newsAgentResponse = newsAgentService.getNewsAgentResponse("Find " + message, UUID.randomUUID());
            feedresponse = feedService.getFeedByQuery(newsAgentResponse.query);
             messageObject.text = (feedresponse.title == null) ? "No results found" : "Showing results for: " + newsAgentResponse.query;
             messageObject.feedResponse=feedresponse;

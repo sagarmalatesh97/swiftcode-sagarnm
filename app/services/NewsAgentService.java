@@ -15,19 +15,19 @@ public class NewsAgentService {
    public NewsAgentResponse getNewsAgentResponse(String message,UUID sessionId){
 
      NewsAgentResponse newsAgentResponse = new NewsAgentResponse();
-
+     System.out.println(message);
      try{
          WSRequest queryRequest =WS.url("https://api.api.ai/api/query");
          CompletionStage<WSResponse> responsePromise = queryRequest
                  .setQueryParameter("v","20150910")
-                 .setQueryParameter("query","news about putin")
+                 .setQueryParameter("query",message)
                  .setQueryParameter("lang","en")
                  .setQueryParameter("sessionId",sessionId.toString())
                  .setQueryParameter("timezone","2018-13-04T16:57:23+0530")
-                 .setHeader("Authorization","Bearer 054a388ef08e46c3beb61cd9a12dd13f")
+                 .setHeader("Authorization","Bearer 946df4ead6524dbcaeb5c6c2409462b6")
                  .get();
          JsonNode response =responsePromise.thenApply(WSResponse::asJson).toCompletableFuture().get();
-
+         System.out.println("Response = " + response);
          newsAgentResponse.query = response.get("result").get("parameters").get("keyword").asText().isEmpty() ?
                  (response.get("result").get("parameters").get("source").asText().isEmpty()
                          ? response.get("result").get("parameters").get("category").asText()
