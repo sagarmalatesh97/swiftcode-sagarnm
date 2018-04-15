@@ -1,4 +1,10 @@
 var app = angular.module('chatapp', ['ngMaterial']);
+
+app.config(function ($mdThemingProvider) {
+    $mdThemingProvider.theme('default')
+        .primaryPalette('blue')
+        .accentPalette('red');
+});
 app.controller('chatController', function ($scope) {
     $scope.messages = [
         {
